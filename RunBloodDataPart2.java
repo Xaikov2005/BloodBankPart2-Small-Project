@@ -1,94 +1,95 @@
 import java.util.Scanner;
 
+class BloodData {
+    private String bloodType;
+    private String rhFactor;
 
-class BloodData
-{
-	private String bloodType;
-	private String rhFactor;
+    // Default constructor
+    public BloodData() {
+        bloodType = "O";
+        rhFactor = "+";
+    }
 
-	public BloodData() 
-	{
-		bloodType = "O";
-		rhFactor = "+";
-	}
+    // Parameterized constructor
+    public BloodData(String bloodType, String rhFactor) {
+        this.bloodType = bloodType;
+        this.rhFactor = rhFactor;
+    }
 
-    public void setBloodType(String bloodType){
-		this.bloodType = bloodType;
-	}	
+    // Setters
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
 
+    public void setRhFactor(String rhFactor) {
+        this.rhFactor = rhFactor;
+    }
 
-	public void setRhFactor(String rhFactor){
-		this.rhFactor = rhFactor;
-	}	
+    // Getters
+    public String getBloodType() {
+        return bloodType;
+    }
 
-	public String getBloodType(){
-		return bloodType;
-	}
+    public String getRhFactor() {
+        return rhFactor;
+    }
 
-	public String getRhFactor(){
-		return rhFactor;
-	}
-
-	public void display() 
-	{
-
-		System.out.print(bloodType + rhFactor + " is added to the Blood Bank!");
-
-	}
-
+    // Display method
+    public void display() {
+        System.out.println(bloodType + rhFactor + " is added to the blood bank.");
+    }
 }
 
-public class RunBloodDataPart2
-{
-	public static void main(String[] args) 
-	
-	{
+public class RunBloodData {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueInput = true;
 
-		Scanner s = new Scanner(System.in);
-		
-		System.out.println("== BLOOD BANK PART 2 == Programmed by Xai Delos Reyes BSIT - 307");
+        while (continueInput) {
+            System.out.print("Enter blood type of a patient (A, B, AB, O): ");
+            String bloodType = scanner.nextLine().toUpperCase();
 
-		
-		System.out.print("Enter the Blood Type of the Patient : ");
-		String inputBloodType = s.nextLine();
-		
-		while(inputBloodType.matches("[\\d!@#$%^&*.,;':/']+")) {
-		System.out.println("Invalid input");
-		RunBloodDataPart2.main(args);
-		break;
-		
+            System.out.print("Enter the Rhesus factor (+ or -) or press Enter for default: ");
+            String rhFactor = scanner.nextLine();
 
-		
-		}
+            BloodData bloodData;
 
-				System.out.print("Enter the Rhesus Factor (+ or -) : ");
-				String inputRhesus = s.nextLine();
+            // Handle default input
+            if (bloodType.isEmpty() && rhFactor.isEmpty()) {
+                bloodData = new BloodData();
+            } 
+            // Validate custom input
+            else if (isValidBloodType(bloodType) && isValidRhFactor(rhFactor)) {
+                bloodData = new BloodData(bloodType, rhFactor);
+            } 
+            // Invalid input handling
+            else {
+                System.out.println("Invalid input! Please enter a valid blood type and Rhesus factor.");
+                continue;
+            }
 
+            // Display the entered blood data
+            bloodData.display();
 
-				while(inputRhesus.matches("[\\d!@#$%^&*.,;':/']+")) {
-					System.out.println("Invalid input");
-					RunBloodDataPart2.main(args);
-					break;
-					
+            // Prompt to continue or stop
+            System.out.print("Do you want to input another patient's blood data? (yes/no): ");
+            String choice = scanner.nextLine().trim().toLowerCase();
 
-				}
-					if(inputBloodType.isEmpty() && inputRhesus.isEmpty()) {
-		    		BloodData bd = new BloodData();
-					bd.display();
+            if (choice.equals("no")) {
+                continueInput = false;
+            }
+        }
 
+        scanner.close();
+    }
 
-					} else {
-						BloodData bd2 = new BloodData();
-						bd2.setBloodType(inputBloodType);
-						bd2.setRhFactor(inputRhesus);
-						String bloodtypeDisplay = bd2.getBloodType();
-						String rhFactorDisplay = bd2.getRhFactor();
-						System.out.print(bloodtypeDisplay + rhFactorDisplay + " is added to the Blood Bank!");
-					}
-				}
-		}
+    // Validate blood type
+    public static boolean isValidBloodType(String bloodType) {
+        return bloodType.equals("A") || bloodType.equals("B") || bloodType.equals("AB") || bloodType.equals("O");
+    }
 
-
-
-
-
+    // Validate Rhesus factor
+    public static boolean isValidRhFactor(String rhFactor) {
+        return rhFactor.equals("+") || rhFactor.equals("-");
+    }
+}
